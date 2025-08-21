@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -12,6 +13,9 @@ def create_app():
     
     # Load config
     app.config.from_object(Config)
+    print(" Loaded DATABASE_URL:", os.getenv("DATABASE_URL"))
+    print(" Flask Config DB URI:", app.config["SQLALCHEMY_DATABASE_URI"])
+    print(" Secret Key:", app.config["SECRET_KEY"])
 
     # Init extensions
     db.init_app(app)
