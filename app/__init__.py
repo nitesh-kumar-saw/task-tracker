@@ -16,7 +16,7 @@ def create_app():
     # Init extensions
     db.init_app(app)
     migrate.init_app(app, db)
-    CORS(app)
+    CORS(appresources={r"/api/*": {"origins": "*"}})
 
     # Register blueprints
     from .routes.task_routes import task_bp
