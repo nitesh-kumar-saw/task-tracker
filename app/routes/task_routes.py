@@ -46,7 +46,3 @@ def get_tasks():
         })
 
     return jsonify(result), 200
-
-@task_bp.route('/ping', methods=['GET'])
-def get_tasks():
-    return 'I am healthy'
