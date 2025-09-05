@@ -15,7 +15,9 @@ def create_task():
     new_task = Task(
         title=data['title'],
         description=data.get('description', ''),
-        status=data.get('status', 'Pending')
+        status=data.get('status', 'Defined'),
+        deadline=data.get('deadline',''),
+        priority=data.get('priority','')
     )
 
     db.session.add(new_task)
@@ -26,7 +28,9 @@ def create_task():
         'title': new_task.title,
         'description': new_task.description,
         'status': new_task.status,
-        'created_at': new_task.created_at
+        'created_at': new_task.created_at,
+        'deadline':new_task.deadline,
+        'priority':new_task.priority
     }), 201
 
 
@@ -42,7 +46,60 @@ def get_tasks():
             'title': task.title,
             'description': task.description,
             'status': task.status,
-            'created_at': task.created_at
+            'created_at': task.created_at,
+            'deadline':task.deadline.strftime("%d-%m-%Y"),
+            'priority':task.priority
         })
 
     return jsonify(result), 200
+
+@task_bp.route("/<int:task_id>", methods=["GET"])
+def get_task(task_id):
+    task = Task.query.get(task_id)
+    if not task:
+        return jsonify({"error": "Task not found"}), 404
+
+    return jsonify({
+        "id": task.id,
+        "title": task.title,
+        "description": task.description,
+        "status": task.status,
+        "priority":task.priority,
+        "deadline":task.deadline.strftime("%Y-%m-%d")
+    })
+
+@task_bp.route("/<int:task_id>", methods=["PUT"])
+def update_task(task_id):
+    task = Task.query.get(task_id)
+    if not task:
+        return jsonify({"error": "Task not found"}), 404
+
+    data = request.json
+    task.title = data.get("title", task.title)
+    task.description = data.get("description", task.description)
+    task.status = data.get("status", task.status)
+    task.priority = data.get("priority", task.priority)
+    task.deadline = data.get("deadline", task.deadline)
+
+    db.session.commit()
+    return jsonify({"message": "Task updated", "task": {
+        "id": task.id,
+        "title": task.title,
+        "description": task.description,
+        "status": task.status,
+        "priority":task.priority,
+        "deadline":task.deadline
+    }})
+
+
+# ✅ Delete Task
+@task_bp.route("/<int:task_id>", methods=["DELETE"])
+def delete_task(task_id):
+    task = Task.query.get(task_id)
+    print(task)
+    if not task:
+        return jsonify({"error": "Task not found"}), 404
+
+    db.session.delete(task)
+    db.session.commit()
+    return jsonify({"message": f"Task {task_id} deleted"})
