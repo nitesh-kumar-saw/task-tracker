@@ -25,5 +25,9 @@ def create_app():
     from .routes.task_routes import task_bp
     app.register_blueprint(task_bp, url_prefix="/api/tasks")
 
+    # Register blueprints
+    from .routes.project_routes import project_bp
+    app.register_blueprint(project_bp, url_prefix="/api/projects")
+
     return app
 

@@ -9,3 +9,15 @@ class Task(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     deadline = db.Column(db.Date,default=datetime.utcnow)
     priority = db.Column(db.String(10),nullable=False)
+
+
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    owner = db.Column(db.String, nullable=True)
+    is_project_done = db.Column(db.Boolean, default=False)     
+    created_by = db.Column(db.String(100), default='System')
+    start_date = db.Column(db.Date,nullable=True)
+    end_date = db.Column(db.Date,nullable=True)
+    created_date = db.Column(db.DateTime, default=datetime.utcnow)
