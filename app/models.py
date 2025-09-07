@@ -21,3 +21,12 @@ class Project(db.Model):
     start_date = db.Column(db.Date,nullable=True)
     end_date = db.Column(db.Date,nullable=True)
     created_date = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Employee(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=True)
+    is_active = db.Column(db.Boolean, default=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=True)
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=True)
+    created_date = db.Column(db.DateTime, default=datetime.utcnow)

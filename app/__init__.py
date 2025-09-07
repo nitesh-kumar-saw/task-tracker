@@ -29,5 +29,9 @@ def create_app():
     from .routes.project_routes import project_bp
     app.register_blueprint(project_bp, url_prefix="/api/projects")
 
+    # Register blueprints
+    from .routes.employee_routes import employee_bp
+    app.register_blueprint(employee_bp, url_prefix="/api/employees")
+
     return app
 
