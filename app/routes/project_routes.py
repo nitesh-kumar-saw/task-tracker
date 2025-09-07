@@ -100,3 +100,12 @@ def update_project(project_id):
                     'is_project_done': project.is_project_done, 'created_by': project.created_by,
                     'start_date': project.start_date, 'end_date': project.end_date,
                     'created_date': project.created_date}}), 201
+
+
+def get_project_name(project_id):
+    project = Project.query.get(project_id)
+
+    if not project:
+        return jsonify({'error': 'Project not found'}), 404
+
+    return project.name
